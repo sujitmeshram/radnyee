@@ -3,594 +3,564 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Radnyee · Coffee & Romance</title>
+  <title>Radnyee · Coffee?</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      user-select: none; /* prevents accidental text selection, keeps clean */
     }
 
     body {
       min-height: 100vh;
-      background: #0a0806;
-      font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
-      overflow-x: hidden;
+      background: radial-gradient(circle at center, #0f0c0a 0%, #020100 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow: hidden;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* ---- 3D Canvas Background (Romantic Particles & Floating Hearts) ---- */
-    #canvas-container {
+    /* 3D Canvas Background - Romantic Particles & Floating Hearts */
+    #canvas-3d {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
-      pointer-events: none;
-    }
-
-    canvas {
       display: block;
-      width: 100%;
-      height: 100%;
     }
 
-    /* Main card - glassmorphic, premium, responsive */
-    .invitation-card {
+    /* Main Card - Minimal, Premium, Glass */
+    .card {
       position: relative;
-      z-index: 10;
-      max-width: 600px;
-      width: 90%;
-      margin: 2rem auto;
-      background: rgba(20, 18, 16, 0.75);
-      backdrop-filter: blur(16px);
-      border-radius: 48px;
-      border: 1px solid rgba(230, 200, 160, 0.5);
-      box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,235,200,0.15) inset;
-      padding: 2rem 1.8rem 2.5rem;
+      z-index: 20;
+      max-width: 520px;
+      width: 86%;
+      margin: 1.5rem;
+      background: rgba(15, 12, 10, 0.65);
+      backdrop-filter: blur(18px);
+      border-radius: 56px;
+      border: 1px solid rgba(255, 200, 140, 0.35);
+      box-shadow: 0 30px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,210,140,0.2) inset;
+      padding: 2rem 1.8rem 2.2rem;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
     }
 
-    /* romantic 3D animation on title */
-    @keyframes gentleFloat {
-      0% { transform: translateY(0px) rotateX(0deg); }
-      50% { transform: translateY(-6px) rotateX(2deg); }
-      100% { transform: translateY(0px) rotateX(0deg); }
-    }
-
-    .romance-title {
-      font-size: 2.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #FFE6C7, #E9C58B, #D9A866);
+    h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #FFE5C4, #EFC48C, #DBA55C);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      margin: 0.5rem 0 0.25rem;
       letter-spacing: -0.5px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      animation: gentleFloat 3s ease-in-out infinite;
-      transform-style: preserve-3d;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
-    .subtitle {
-      font-size: 1.2rem;
-      color: #f3e3cf;
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      margin: 0.75rem 0 0.5rem;
-      opacity: 0.95;
-    }
-
-    .name-highlight {
-      font-size: 2.2rem;
-      font-weight: 600;
-      background: linear-gradient(120deg, #FFE4B5, #F3CD81);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
+    .her-name {
+      font-size: 2rem;
+      font-weight: 500;
+      color: #F7DEA3;
+      margin: 0.3rem 0;
       display: inline-block;
-      border-bottom: 2px solid #dcb570;
-      padding-bottom: 6px;
-      margin: 10px 0 5px;
+      border-bottom: 1.5px solid #E9BC7A;
+      padding-bottom: 4px;
     }
 
-    .invite-text {
-      font-size: 1.2rem;
-      line-height: 1.5;
-      color: #FFF4E6;
-      margin: 1.2rem 0;
-      font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 400;
-      background: rgba(0,0,0,0.2);
-      padding: 0.8rem;
-      border-radius: 40px;
-      backdrop-filter: blur(4px);
-    }
-
-    .tomorrow-badge {
-      background: rgba(218, 165, 100, 0.25);
-      border-radius: 100px;
-      padding: 8px 18px;
+    .date-time {
+      margin-top: 1.2rem;
+      background: rgba(0,0,0,0.35);
       display: inline-block;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: #FFE1AA;
-      margin: 0.5rem 0;
-      border: 1px solid rgba(255,210,130,0.5);
+      padding: 0.5rem 1.4rem;
+      border-radius: 60px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #FFE2B5;
       font-family: monospace;
       letter-spacing: 1px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,190,100,0.4);
     }
 
-    .buttons-container {
+    .ask {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 1rem;
+      color: #FFF2E2;
+      line-height: 1.4;
+      font-weight: 400;
+      background: rgba(0,0,0,0.25);
+      padding: 0.6rem;
+      border-radius: 40px;
+    }
+
+    .buttons {
       display: flex;
       justify-content: center;
-      gap: 1.8rem;
+      gap: 2rem;
+      margin: 1.8rem 0 1rem;
       flex-wrap: wrap;
-      margin: 2rem 0 1rem;
-      position: relative;
     }
 
     .btn {
-      font-family: 'Inter', 'Segoe UI', system-ui;
+      font-family: 'Inter', system-ui;
       font-weight: 700;
       font-size: 1.35rem;
-      padding: 0.85rem 2.2rem;
+      padding: 0.8rem 2.2rem;
       border: none;
-      border-radius: 60px;
+      border-radius: 80px;
       cursor: pointer;
-      transition: all 0.2s ease;
-      min-width: 150px;
+      transition: transform 0.15s ease, box-shadow 0.2s;
+      min-width: 140px;
       letter-spacing: 0.5px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      backdrop-filter: blur(2px);
     }
 
     .btn-yes {
-      background: linear-gradient(115deg, #D9A066, #C17D3B);
-      color: #1F1408;
-      font-weight: bold;
-      border: 1px solid #FFDA9E;
-      text-shadow: 0 1px 0 rgba(255,245,200,0.8);
+      background: linear-gradient(115deg, #DC9E5C, #B96F2E);
+      color: #1D130A;
+      box-shadow: 0 10px 18px rgba(0,0,0,0.4);
+      border: 1px solid #FFCD94;
+      font-weight: 800;
     }
 
     .btn-yes:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
     }
 
     .btn-no {
-      background: #3B2E24;
-      border: 1px solid #896E50;
-      color: #FFE3C9;
-      position: relative;
+      background: #30261F;
+      border: 1px solid #7A6248;
+      color: #E7CDAA;
+      cursor: pointer;
+      transition: all 0.05s linear;
     }
 
-    /* Mobile adjustments: bigger tap targets, no runaway on touch */
-    @media (max-width: 640px) {
-      .invitation-card {
-        width: 92%;
-        padding: 1.5rem 1.2rem 2rem;
-        margin: 1rem auto;
-      }
-      .romance-title {
-        font-size: 2rem;
-      }
-      .name-highlight {
-        font-size: 1.7rem;
-      }
-      .btn {
-        font-size: 1.2rem;
-        padding: 0.7rem 1.5rem;
-        min-width: 130px;
-      }
-      .invite-text {
-        font-size: 1rem;
-      }
-      .buttons-container {
-        gap: 1.2rem;
-      }
+    /* Mobile: No button is disabled (pointer-events: none) */
+    .no-disabled-mobile {
+      opacity: 0.55;
+      cursor: not-allowed;
+      filter: grayscale(0.1);
     }
 
-    @media (max-width: 450px) {
-      .btn {
-        font-size: 1rem;
-        padding: 0.65rem 1rem;
-        min-width: 110px;
-      }
-      .romance-title {
-        font-size: 1.7rem;
-      }
-    }
-
-    .response-message {
-      margin-top: 1.8rem;
-      font-size: 1.1rem;
-      padding: 1rem;
+    .response-area {
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      padding: 0.8rem;
+      background: rgba(0,0,0,0.4);
       border-radius: 50px;
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(12px);
-      color: #FFF1DF;
-      font-weight: 500;
-      transition: all 0.3s;
-      font-family: 'Inter', sans-serif;
+      color: #FFEFD6;
+      font-weight: 400;
+      backdrop-filter: blur(8px);
     }
 
-    .floating-heart {
-      font-size: 1.6rem;
-      margin-top: 1rem;
-      opacity: 0.9;
-      letter-spacing: 8px;
-    }
-
-    footer {
+    .tiny-footer {
       font-size: 0.65rem;
-      margin-top: 1.8rem;
-      color: #AA8B62;
-      font-family: monospace;
-      opacity: 0.7;
+      margin-top: 1.2rem;
+      opacity: 0.5;
+      color: #B8946A;
     }
 
-    /* 3D immersive effect on card */
-    .invitation-card {
-      transform: translateZ(10px);
-      transform-style: preserve-3d;
-      box-shadow: 0 25px 45px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,215,150,0.3) inset;
+    @media (max-width: 550px) {
+      .card {
+        width: 92%;
+        padding: 1.6rem 1.2rem;
+      }
+      h1 {
+        font-size: 2.3rem;
+      }
+      .her-name {
+        font-size: 1.6rem;
+      }
+      .btn {
+        font-size: 1.1rem;
+        padding: 0.6rem 1.3rem;
+        min-width: 115px;
+      }
+      .date-time {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
-<div id="canvas-container"></div>
+<canvas id="canvas-3d"></canvas>
 
-<div class="invitation-card">
-  <div class="romance-title">☕ a coffee moment?</div>
-  <div class="subtitle">with</div>
-  <div class="name-highlight">Radnyee</div>
-  
-  <div class="tomorrow-badge">✨ tomorrow · just us ✨</div>
-  
-  <div class="invite-text">
-    One cup, two hearts, and a beautiful afternoon.<br>
-    Let's create our own story.
+<div class="card">
+  <h1>☕ coffee?</h1>
+  <div class="her-name">radnyee</div>
+  <div class="date-time">✨ 1 may · 5pm ✨</div>
+  <div class="ask">coffee together? location — anywhere you’d love.</div>
+
+  <div class="buttons">
+    <button class="btn btn-yes" id="yesBtn">yes ✨</button>
+    <button class="btn btn-no" id="noBtn">no</button>
   </div>
 
-  <div class="buttons-container">
-    <button class="btn btn-yes" id="yesBtn">💛 Yes 💛</button>
-    <button class="btn btn-no" id="noBtn">🌙 No 🌙</button>
+  <div id="responseMessage" class="response-area">
+    <span>just say yes → coffee & a beautiful evening.</span>
   </div>
-
-  <div id="responseArea" class="response-message">
-    <span>☕ Tomorrow? I'll choose the coziest café, you just bring your beautiful smile.</span>
-  </div>
-  <div class="floating-heart" id="heartEmoji">💫💕☕💕💫</div>
-  <footer>for Radnyee · with all my warmth</footer>
+  <div class="tiny-footer">for radnyee · 1 may</div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-  (function() {
-    // ---------- 3D Romantic Background Animation (Particles & Floating Hearts) ----------
-    const container = document.getElementById('canvas-container');
-    const scene = new THREE.Scene();
-    scene.background = null; // transparent, blends with gradient
-    scene.fog = new THREE.FogExp2(0x0a0806, 0.008);
+<!-- Three.js library -->
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+    }
+  }
+</script>
+
+<script type="module">
+  import * as THREE from 'three';
+
+  // --- setup 3D Romantic Scene ---
+  const canvasEl = document.getElementById('canvas-3d');
+  const scene = new THREE.Scene();
+  scene.background = null; // transparent blend with body gradient
+  scene.fog = new THREE.FogExp2(0x020100, 0.012);
+  
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 1.5, 18);
+  camera.lookAt(0, 0, 0);
+  
+  const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  
+  // --- Lights for depth and romance ---
+  const ambient = new THREE.AmbientLight(0x2c1e12);
+  scene.add(ambient);
+  const mainLight = new THREE.DirectionalLight(0xffc896, 1.2);
+  mainLight.position.set(5, 8, 5);
+  scene.add(mainLight);
+  const backLight = new THREE.PointLight(0xc97e45, 0.7);
+  backLight.position.set(-3, 2, -6);
+  scene.add(backLight);
+  const fillLight = new THREE.PointLight(0xd89254, 0.5);
+  fillLight.position.set(4, 3, 4);
+  scene.add(fillLight);
+  
+  // --- Floating Heart Particles (advanced, romantic, millions of tiny specks) ---
+  const heartParticleCount = 1800;
+  const heartGeometry = new THREE.BufferGeometry();
+  const heartPositions = new Float32Array(heartParticleCount * 3);
+  for (let i = 0; i < heartParticleCount; i++) {
+    // scattered in a cylinder shape
+    heartPositions[i*3] = (Math.random() - 0.5) * 38;
+    heartPositions[i*3+1] = (Math.random() - 0.5) * 24;
+    heartPositions[i*3+2] = (Math.random() - 0.5) * 32 - 12;
+  }
+  heartGeometry.setAttribute('position', new THREE.BufferAttribute(heartPositions, 3));
+  const particleMaterial = new THREE.PointsMaterial({
+    color: 0xffaa77,
+    size: 0.09,
+    transparent: true,
+    opacity: 0.55,
+    blending: THREE.AdditiveBlending
+  });
+  const particleSystem = new THREE.Points(heartGeometry, particleMaterial);
+  scene.add(particleSystem);
+  
+  // --- Soft glowing orbs floating (rose gold and cream) ---
+  const orbCount = 220;
+  const orbGeom = new THREE.SphereGeometry(0.11, 12, 12);
+  const orbList = [];
+  for (let i = 0; i < orbCount; i++) {
+    const colorChoice = Math.random() > 0.6 ? 0xffaa77 : 0xffbb99;
+    const material = new THREE.MeshStandardMaterial({ color: colorChoice, emissive: 0x552200, emissiveIntensity: 0.35 });
+    const orb = new THREE.Mesh(orbGeom, material);
+    orb.userData = {
+      vx: (Math.random() - 0.5) * 0.008,
+      vy: (Math.random() - 0.5) * 0.006 + 0.004,
+      vz: (Math.random() - 0.5) * 0.007,
+      posX: (Math.random() - 0.5) * 32,
+      posY: (Math.random() - 0.5) * 20,
+      posZ: (Math.random() - 0.5) * 28 - 10,
+    };
+    orb.position.set(orb.userData.posX, orb.userData.posY, orb.userData.posZ);
+    scene.add(orb);
+    orbList.push(orb);
+  }
+  
+  // --- Romantic rotating heart ring (3D ring of tiny hearts sprite) ---
+  // create custom heart texture via canvas
+  function createHeartTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, 32, 32);
+    ctx.font = "26px 'Segoe UI', 'Arial'";
+    ctx.fillStyle = '#ff99aa';
+    ctx.fillText("❤️", 3, 25);
+    return new THREE.CanvasTexture(canvas);
+  }
+  const heartTexture = createHeartTexture();
+  const heartRingGroup = [];
+  const ringCount = 45;
+  for (let i = 0; i < ringCount; i++) {
+    const spriteMat = new THREE.SpriteMaterial({ map: heartTexture, transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending });
+    const sprite = new THREE.Sprite(spriteMat);
+    const angle = (i / ringCount) * Math.PI * 2;
+    const radius = 4.2;
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+    sprite.position.set(x, Math.sin(angle * 2) * 0.8, z);
+    sprite.scale.set(0.55, 0.55, 1);
+    scene.add(sprite);
+    heartRingGroup.push(sprite);
+  }
+  
+  // Floating ribbons effect (small rotating stars)
+  const starCount = 500;
+  const starGeom = new THREE.BufferGeometry();
+  const starPositions = new Float32Array(starCount * 3);
+  for (let i = 0; i < starCount; i++) {
+    starPositions[i*3] = (Math.random() - 0.5) * 55;
+    starPositions[i*3+1] = (Math.random() - 0.5) * 30;
+    starPositions[i*3+2] = (Math.random() - 0.5) * 40 - 20;
+  }
+  starGeom.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+  const starMaterial = new THREE.PointsMaterial({ color: 0xffcf99, size: 0.07, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending });
+  const starsField = new THREE.Points(starGeom, starMaterial);
+  scene.add(starsField);
+  
+  // time for animations
+  let time = 0;
+  
+  function animate3D() {
+    requestAnimationFrame(animate3D);
+    time += 0.012;
     
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 25;
-    camera.position.y = 2;
+    // rotate particle field gently
+    particleSystem.rotation.y = time * 0.08;
+    particleSystem.rotation.x = Math.sin(time * 0.2) * 0.1;
+    starsField.rotation.y = time * 0.03;
+    starsField.rotation.x = time * 0.02;
     
-    const renderer = new THREE.WebGLRenderer({ alpha: true }); // transparent bg
+    // animate orbs floating
+    orbList.forEach(orb => {
+      orb.userData.posX += orb.userData.vx;
+      orb.userData.posY += orb.userData.vy;
+      orb.userData.posZ += orb.userData.vz;
+      if (Math.abs(orb.userData.posX) > 28) orb.userData.vx *= -0.98;
+      if (Math.abs(orb.userData.posY) > 18) orb.userData.vy *= -0.98;
+      if (Math.abs(orb.userData.posZ) > 22) orb.userData.vz *= -0.98;
+      orb.position.x = orb.userData.posX;
+      orb.position.y = orb.userData.posY;
+      orb.position.z = orb.userData.posZ;
+      const pulse = 0.4 + Math.sin(time * 3 + orb.userData.posX) * 0.2;
+      orb.material.emissiveIntensity = pulse;
+    });
+    
+    // animate heart ring: rotate around Y axis
+    heartRingGroup.forEach((heart, idx) => {
+      const angle = (idx / ringCount) * Math.PI * 2 + time * 0.8;
+      const radius = 4.5;
+      heart.position.x = Math.cos(angle) * radius;
+      heart.position.z = Math.sin(angle) * radius;
+      heart.position.y = Math.sin(angle * 2 + time) * 0.9;
+      heart.material.opacity = 0.7 + Math.sin(time * 3 + idx) * 0.25;
+    });
+    
+    // slight camera motion
+    camera.position.x += (Math.sin(time * 0.2) * 0.12 - camera.position.x) * 0.03;
+    camera.position.y += (Math.sin(time * 0.35) * 0.1 - camera.position.y) * 0.03;
+    camera.lookAt(0, 0.5, 0);
+    
+    renderer.render(scene, camera);
+  }
+  
+  animate3D();
+  
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
+  });
+  
+  // ---------- Interactive logic: YES / NO (Desktop: no button runs away, Mobile: No button disabled) ----------
+  const yesButton = document.getElementById('yesBtn');
+  const noButton = document.getElementById('noBtn');
+  const responseDiv = document.getElementById('responseMessage');
+  
+  // detect mobile (touch or small screen)
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window) || (window.innerWidth <= 768);
+  
+  let isConfirmed = false;
+  
+  // Disable no button completely on mobile (cannot be clicked at all)
+  if (isMobile) {
+    noButton.disabled = true;
+    noButton.style.pointerEvents = 'none';
+    noButton.classList.add('no-disabled-mobile');
+    noButton.style.cursor = 'not-allowed';
+    noButton.style.opacity = '0.5';
+  } else {
+    // DESKTOP: Make no button RUN AWAY from cursor, never reachable
+    noButton.disabled = false;
+    noButton.style.pointerEvents = 'auto';
+    let runawayActive = true;
+    const container = noButton.parentElement;
     
-    // romantic color palette: warm gold, rose, soft cream
-    const colors = [0xffaa77, 0xffaa88, 0xff9966, 0xdd8866, 0xccaa88, 0xffbe8c, 0xff88aa];
-    
-    // Heart shape texture? We'll create floating glowing spheres and tiny spinning hearts using custom sprites
-    // Create heart sprite canvas
-    function createHeartSprite(colorStr = '#ffaaaa') {
-      const canvas = document.createElement('canvas');
-      canvas.width = 32;
-      canvas.height = 32;
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, 32, 32);
-      ctx.fillStyle = colorStr;
-      ctx.shadowBlur = 0;
-      ctx.font = "26px 'Segoe UI', 'Arial'";
-      ctx.fillText("❤️", 2, 26);
-      const texture = new THREE.CanvasTexture(canvas);
-      const material = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
-      const sprite = new THREE.Sprite(material);
-      sprite.scale.set(0.8, 0.8, 1);
-      return sprite;
+    function getRandomSafePosition(btn) {
+      const parentRect = container.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+      const btnWidth = btnRect.width;
+      const btnHeight = btnRect.height;
+      const padding = 15;
+      let maxX = parentRect.width - btnWidth - padding;
+      let maxY = parentRect.height - btnHeight - padding;
+      let minX = padding;
+      let minY = padding;
+      if (maxX < minX) maxX = minX + 5;
+      if (maxY < minY) maxY = minY + 5;
+      const randX = Math.floor(Math.random() * (maxX - minX + 1) + minX);
+      const randY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+      return { x: randX, y: randY };
     }
     
-    // Particle system (romantic dust)
-    const particleCount = 1300;
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
-      particlePositions[i*3] = (Math.random() - 0.5) * 80;
-      particlePositions[i*3+1] = (Math.random() - 0.5) * 40;
-      particlePositions[i*3+2] = (Math.random() - 0.5) * 40 - 20;
-    }
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    const particleMaterial = new THREE.PointsMaterial({
-      color: 0xffaa77,
-      size: 0.12,
-      transparent: true,
-      opacity: 0.5,
-      blending: THREE.AdditiveBlending
-    });
-    const particleSystem = new THREE.Points(particlesGeometry, particleMaterial);
-    scene.add(particleSystem);
-    
-    // Floating hearts group
-    const heartsGroup = [];
-    const heartCount = 45;
-    for (let i = 0; i < heartCount; i++) {
-      const heartColor = colors[Math.floor(Math.random() * colors.length)];
-      const heartSprite = createHeartSprite('#ffb7b7');
-      heartSprite.userData = {
-        speedX: (Math.random() - 0.5) * 0.008,
-        speedY: 0.01 + Math.random() * 0.02,
-        speedZ: (Math.random() - 0.5) * 0.005,
-        posX: (Math.random() - 0.5) * 35,
-        posY: (Math.random() - 0.5) * 18,
-        posZ: (Math.random() - 0.5) * 20 - 10,
-        rotSpeed: Math.random() * 0.02
-      };
-      heartSprite.position.set(heartSprite.userData.posX, heartSprite.userData.posY, heartSprite.userData.posZ);
-      heartSprite.scale.set(0.5 + Math.random() * 0.5, 0.5 + Math.random() * 0.5, 1);
-      scene.add(heartSprite);
-      heartsGroup.push(heartSprite);
+    function moveNoButton() {
+      if (!runawayActive || isConfirmed) return;
+      const parentRect = container.getBoundingClientRect();
+      const btnRect = noButton.getBoundingClientRect();
+      const currentLeft = btnRect.left - parentRect.left;
+      const currentTop = btnRect.top - parentRect.top;
+      const { x, y } = getRandomSafePosition(noButton);
+      const deltaX = x - currentLeft;
+      const deltaY = y - currentTop;
+      noButton.style.transition = 'transform 0.2s cubic-bezier(0.2, 1.1, 0.4, 1.2)';
+      noButton.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+      // tiny playful heart feedback
+      const heartSpan = document.querySelector('.tiny-footer');
+      if (heartSpan) heartSpan.style.opacity = '1';
     }
     
-    // Add romantic glowing orbs (rose gold)
-    const orbCount = 80;
-    const orbGeometry = new THREE.SphereGeometry(0.12, 8, 8);
-    const orbMaterial = new THREE.MeshStandardMaterial({ color: 0xffaa88, emissive: 0x552200, emissiveIntensity: 0.4 });
-    const orbs = [];
-    for (let i = 0; i < orbCount; i++) {
-      const orb = new THREE.Mesh(orbGeometry, orbMaterial.clone());
-      orb.userData = {
-        speedX: (Math.random() - 0.5) * 0.004,
-        speedY: (Math.random() - 0.5) * 0.003,
-        speedZ: (Math.random() - 0.5) * 0.002,
-        posX: (Math.random() - 0.5) * 45,
-        posY: (Math.random() - 0.5) * 28,
-        posZ: (Math.random() - 0.5) * 30 - 15,
-      };
-      orb.position.set(orb.userData.posX, orb.userData.posY, orb.userData.posZ);
-      scene.add(orb);
-      orbs.push(orb);
+    function onMouseMoveNear(e) {
+      if (!runawayActive || isConfirmed) return;
+      const rect = noButton.getBoundingClientRect();
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const distance = Math.hypot(mouseX - centerX, mouseY - centerY);
+      if (distance < 90) {
+        moveNoButton();
+      }
     }
     
-    // ambient & point light for 3D depth
-    const ambientLight = new THREE.AmbientLight(0x332010);
-    scene.add(ambientLight);
-    const pointLight = new THREE.PointLight(0xd48c54, 1.2, 40);
-    pointLight.position.set(5, 8, 12);
-    scene.add(pointLight);
-    const backLight = new THREE.PointLight(0xb5682a, 0.6);
-    backLight.position.set(-4, 3, -8);
-    scene.add(backLight);
+    document.addEventListener('mousemove', onMouseMoveNear);
     
-    // gentle rotation animation
-    let time = 0;
-    
-    function animate3D() {
-      requestAnimationFrame(animate3D);
-      time += 0.012;
-      
-      // Rotate particle system slowly for romantic drift
-      particleSystem.rotation.y = time * 0.05;
-      particleSystem.rotation.x = Math.sin(time * 0.1) * 0.1;
-      
-      // Animate hearts floating upwards gently + sin movement
-      heartsGroup.forEach(heart => {
-        heart.userData.posY += heart.userData.speedY;
-        heart.userData.posX += Math.sin(time * 0.8 + heart.userData.posZ) * 0.008;
-        if (heart.userData.posY > 14) heart.userData.posY = -12;
-        if (heart.userData.posX > 22) heart.userData.posX = -20;
-        if (heart.userData.posX < -22) heart.userData.posX = 20;
-        heart.position.x = heart.userData.posX;
-        heart.position.y = heart.userData.posY;
-        heart.position.z = heart.userData.posZ + Math.sin(time * 0.5) * 0.3;
-        heart.material.opacity = 0.7 + Math.sin(time * 2 + heart.userData.posX) * 0.2;
-      });
-      
-      // animate orbs: gentle float
-      orbs.forEach(orb => {
-        orb.userData.posX += orb.userData.speedX;
-        orb.userData.posY += orb.userData.speedY;
-        orb.userData.posZ += orb.userData.speedZ;
-        if (Math.abs(orb.userData.posX) > 28) orb.userData.posX *= -0.98;
-        if (Math.abs(orb.userData.posY) > 20) orb.userData.posY *= -0.98;
-        if (Math.abs(orb.userData.posZ) > 22) orb.userData.posZ *= -0.98;
-        orb.position.x = orb.userData.posX;
-        orb.position.y = orb.userData.posY;
-        orb.position.z = orb.userData.posZ;
-        const intensity = 0.4 + Math.sin(time * 2 + orb.userData.posX) * 0.2;
-        orb.material.emissiveIntensity = intensity;
-      });
-      
-      camera.position.x += (0 - camera.position.x) * 0.03;
-      camera.position.y += (Math.sin(time * 0.2) * 0.2 - camera.position.y) * 0.03;
-      camera.lookAt(0, 2, 0);
-      renderer.render(scene, camera);
-    }
-    
-    animate3D();
-    
+    // also on window resize, reposition no button inside boundaries
     window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      if (!runawayActive || isConfirmed) return;
+      noButton.style.transform = 'none';
+      setTimeout(() => {
+        const parentRect = container.getBoundingClientRect();
+        const btnRect = noButton.getBoundingClientRect();
+        if (btnRect.left < parentRect.left + 5 || btnRect.right > parentRect.right - 5 || btnRect.top < parentRect.top + 5) {
+          moveNoButton();
+        }
+      }, 30);
     });
     
-    // ---------------- Romantic Invitation Logic (No runaway on mobile, No orchid text) ----------------
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const responseDiv = document.getElementById('responseArea');
-    const heartEmojiSpan = document.getElementById('heartEmoji');
+    window.cleanupRunaway = () => {
+      runawayActive = false;
+      document.removeEventListener('mousemove', onMouseMoveNear);
+    };
+  }
+  
+  // YES BUTTON LOGIC: simple reply + celebration and disable all
+  function onYesClick() {
+    if (isConfirmed) return;
+    isConfirmed = true;
     
-    let isConfirmed = false;
-    
-    // For desktop: we add a slight playful runaway only if NOT mobile (touch devices) 
-    // But according to request: "in mobile, she should be able to click on no option" -> so we disable escape on touch.
-    // On desktop, we enable runaway effect to be playful, but on mobile it's normal click.
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window) || (window.innerWidth <= 768);
-    
-    // If it's mobile, we don't apply the mousemove escape.
-    // But also, we want NO to be easily clickable, so no running. For desktop, make it playful run.
+    // disable no button completely (for both mobile & desktop)
+    noButton.disabled = true;
+    noButton.style.pointerEvents = 'none';
+    noButton.style.opacity = '0.4';
+    noButton.style.cursor = 'default';
     if (!isMobile) {
-      // desktop: runaway effect
-      let runawayActive = true;
-      const boundaryPad = 20;
-      
-      function getRandomPos(btn) {
-        const container = btn.parentElement;
-        const containerRect = container.getBoundingClientRect();
-        const btnRect = btn.getBoundingClientRect();
-        const maxX = containerRect.width - btnRect.width - boundaryPad;
-        const maxY = containerRect.height - btnRect.height - boundaryPad;
-        const minX = boundaryPad;
-        const minY = boundaryPad;
-        const randX = Math.random() * (maxX - minX) + minX;
-        const randY = Math.random() * (maxY - minY) + minY;
-        return { x: randX, y: randY };
-      }
-      
-      function moveNoButtonAway(btn) {
-        if (isConfirmed || !runawayActive) return;
-        const parent = btn.parentElement;
-        const parentRect = parent.getBoundingClientRect();
-        const btnRect = btn.getBoundingClientRect();
-        const curLeft = btnRect.left - parentRect.left;
-        const curTop = btnRect.top - parentRect.top;
-        const { x, y } = getRandomPos(btn);
-        const deltaX = x - curLeft;
-        const deltaY = y - curTop;
-        btn.style.transition = 'transform 0.18s cubic-bezier(0.2, 1.1, 0.3, 1)';
-        btn.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-        // little floating heart pulse
-        heartEmojiSpan.style.transform = 'scale(1.1)';
-        setTimeout(() => { if(heartEmojiSpan) heartEmojiSpan.style.transform = ''; }, 200);
-      }
-      
-      function handleMouseMove(e) {
-        if (isConfirmed || !runawayActive) return;
-        const noRect = noBtn.getBoundingClientRect();
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-        const btnCenterX = noRect.left + noRect.width / 2;
-        const btnCenterY = noRect.top + noRect.height / 2;
-        const dist = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
-        if (dist < 95) {
-          moveNoButtonAway(noBtn);
-        }
-      }
-      
-      document.addEventListener('mousemove', handleMouseMove);
-      
-      // reset position on window resize
-      window.addEventListener('resize', () => {
-        if (!isConfirmed && runawayActive && noBtn) {
-          noBtn.style.transform = 'none';
-          setTimeout(() => {
-            const parentRect = noBtn.parentElement.getBoundingClientRect();
-            const btnRect = noBtn.getBoundingClientRect();
-            if (btnRect.left < parentRect.left + 5 || btnRect.right > parentRect.right - 5) {
-              moveNoButtonAway(noBtn);
-            }
-          }, 50);
-        }
-      });
-      
-      // save cleanup
-      window.cleanupRunaway = () => {
-        runawayActive = false;
-        document.removeEventListener('mousemove', handleMouseMove);
+      if (window.cleanupRunaway) window.cleanupRunaway();
+      noButton.style.transform = 'none';
+    }
+    
+    // update response with date: 1 may 5pm (already shown) & coffee
+    responseDiv.innerHTML = `✨ can't wait, radnyee! ✨<br> ☕ 1 may · 5pm — just coffee & you. we'll find the perfect spot. 💛`;
+    // add confetti effect (romantic)
+    createRomanticConfetti();
+    // subtle 3D pulse effect on card
+    const cardDiv = document.querySelector('.card');
+    cardDiv.style.transform = 'scale(1.01)';
+    setTimeout(() => { if(cardDiv) cardDiv.style.transform = ''; }, 300);
+  }
+  
+  function createRomanticConfetti() {
+    const colors = ['#FFDDB7', '#F7BD7A', '#FFB347', '#FF9F6E', '#E6A878'];
+    for (let i = 0; i < 120; i++) {
+      const conf = document.createElement('div');
+      const icons = ['❤️', '✨', '☕', '💛', '🌸', '⭐'];
+      conf.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+      conf.style.position = 'fixed';
+      conf.style.left = Math.random() * window.innerWidth + 'px';
+      conf.style.top = '-40px';
+      conf.style.fontSize = (18 + Math.random() * 28) + 'px';
+      conf.style.pointerEvents = 'none';
+      conf.style.zIndex = '9999';
+      conf.style.opacity = '0.9';
+      conf.style.transition = 'transform 1.2s ease-out, opacity 1.2s';
+      document.body.appendChild(conf);
+      const fall = () => {
+        conf.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 400}deg)`;
+        conf.style.opacity = '0';
+        setTimeout(() => conf.remove(), 1300);
       };
-    } else {
-      // Mobile: No button stays in place — set static, no transform shenanigans.
-      noBtn.style.transform = 'none';
-      noBtn.style.transition = 'none';
-      // ensure it's fully clickable
-      noBtn.style.pointerEvents = 'auto';
+      setTimeout(fall, i * 20);
     }
-    
-    // YES click: romantic confirmation + ask for tomorrow (already in text)
-    function handleYes() {
-      if (isConfirmed) return;
-      isConfirmed = true;
-      
-      // disable runaway if any
-      if (typeof window.cleanupRunaway === 'function') window.cleanupRunaway();
-      // disable no button gracefully
-      noBtn.style.pointerEvents = 'none';
-      noBtn.style.opacity = '0.6';
-      noBtn.style.transform = 'none';
-      noBtn.disabled = true;
-      
-      // update response with tomorrow invite
-      responseDiv.innerHTML = `💖 Radnyee, you just made my day! 💖<br> ☕ <strong>Tomorrow at 4 PM</strong> — let's meet at your favorite café. I'll be counting the hours until then. Just you, coffee, and the sweetest conversations. ✨`;
-      heartEmojiSpan.innerHTML = '💘☕✨ TOMORROW · CAN’T WAIT ✨☕💘';
-      // romantic confetti burst
-      createRomanticConfetti();
-      // additional 3D pulse: add floating effect to card
-      const card = document.querySelector('.invitation-card');
-      card.style.animation = 'gentleFloat 0.6s ease-in-out 2';
-      setTimeout(() => { card.style.animation = ''; }, 800);
+    // plus heart burst
+    for (let i=0;i<40;i++) {
+      const heartBurst = document.createElement('div');
+      heartBurst.innerHTML = '💖';
+      heartBurst.style.position = 'fixed';
+      heartBurst.style.left = Math.random() * window.innerWidth + 'px';
+      heartBurst.style.bottom = '-20px';
+      heartBurst.style.fontSize = (14 + Math.random() * 24) + 'px';
+      heartBurst.style.pointerEvents = 'none';
+      heartBurst.style.zIndex = '9998';
+      heartBurst.style.transition = 'all 1s linear';
+      heartBurst.style.opacity = '0.8';
+      document.body.appendChild(heartBurst);
+      setTimeout(() => {
+        heartBurst.style.transform = `translateY(-${window.innerHeight + 80}px) rotate(${Math.random() * 360}deg)`;
+        heartBurst.style.opacity = '0';
+        setTimeout(() => heartBurst.remove(), 1100);
+      }, i * 25);
     }
-    
-    function handleNo() {
-      if (isConfirmed) return;
-      // On mobile, if she clicks no, we still convert it to a romantic yes because true love doesn't take no!
-      // but we make it playful and ask anyway. According to romantic date context we turn it into yes.
-      handleYes(); // Even if she clicks No, we transform into Yes for happy ending.
-      responseDiv.innerHTML = `💗 Even your 'No' whispered a secret 'Yes'... 💗<br> So tomorrow it is! Coffee & you — the perfect blend. ☕✨`;
+  }
+  
+  yesButton.addEventListener('click', onYesClick);
+  
+  // For desktop: If somebody miraculously clicks the "No" button via tab or something, convert to yes.
+  noButton.addEventListener('click', (e) => {
+    if (isConfirmed) return;
+    e.preventDefault();
+    // Any click on no (desktop runaway, but if somehow triggered) we turn into yes
+    if (!isConfirmed) {
+      onYesClick();
+      responseDiv.innerHTML = `💛 even your 'no' turned into a 'yes' — 1 may, 5pm, coffee. 💛`;
     }
-    
-    function createRomanticConfetti() {
-      const confCount = 110;
-      for (let i = 0; i < confCount; i++) {
-        const conf = document.createElement('div');
-        const icons = ['❤️', '💖', '✨', '☕', '💫', '🌸', '⭐'];
-        conf.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-        conf.style.position = 'fixed';
-        conf.style.left = Math.random() * window.innerWidth + 'px';
-        conf.style.top = '-30px';
-        conf.style.fontSize = (18 + Math.random() * 24) + 'px';
-        conf.style.pointerEvents = 'none';
-        conf.style.zIndex = '9999';
-        conf.style.opacity = '0.9';
-        conf.style.transition = 'transform 1.2s linear, opacity 1.4s';
-        document.body.appendChild(conf);
-        const fall = () => {
-          conf.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 500}deg)`;
-          conf.style.opacity = '0';
-          setTimeout(() => conf.remove(), 1500);
-        };
-        setTimeout(fall, i * 18);
-      }
-      // additional glowing effect
-    }
-    
-    yesBtn.addEventListener('click', handleYes);
-    noBtn.addEventListener('click', handleNo);
-    
-    // small adjustment for mobile: ensure No button never runs away, just works normally (it's already static)
-    if (isMobile) {
-      // just to be extra safe: remove any transform that might have been applied by desktop leftover
-      noBtn.style.transform = 'none';
-      noBtn.style.position = 'relative';
-    }
-    
-    // also if user taps on mobile response should be clear
-  })();
+  });
+  
+  // Option: For desktop, make sure the no button is never reachable; just for sanity, if confirm happens it's fine.
+  // For mobile, no button is disabled and unclickable. Perfect.
 </script>
 </body>
 </html>
