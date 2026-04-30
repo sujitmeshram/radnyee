@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Radnyee · A Coffee Invitation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none; /* subtle: prevents accidental selects, keeps luxury feel */
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 30%, #1a120b, #0c0907);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+      padding: 1.5rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* premium background texture + orchid motief */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" opacity="0.08"><path fill="none" stroke="%23d9b48b" stroke-width="1.2" d="M320 320q40-20 80 0t60 50q20 30 5 70-15 40-55 55-40 15-75-5-35-20-45-60-10-40 15-75 25-35 70-45zM780 480q55-25 95 5t35 90q-5 60-45 85-40 25-85 10-45-15-65-55-20-40-10-85 10-45 50-65 40-20 85-5zM540 200q30-55 85-55t85 50q30 50 10 100-20 50-70 70-50 20-100-5-50-25-70-75-20-50 0-100 20-50 80-70zM280 700q45-20 80 5t35 75q0 50-35 75-35 25-80 15-45-10-65-50-20-40-5-80 15-40 55-55 40-15 80 5zM860 680q35-35 75-30t55 45q15 40-5 75-20 35-60 45-40 10-70-10-30-20-40-55-10-35 10-65 20-30 55-35z"/><circle cx="600" cy="600" r="50" stroke="%23d9b48b" fill="none" stroke-width="1.5"/><path d="M550 550 L 480 480 M650 550 L 720 480 M550 650 L 480 720 M650 650 L 720 720" stroke="%23d9b48b" stroke-width="1" opacity="0.6"/></svg>');
+      background-repeat: repeat;
+      background-size: 140px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* main card - rich, glassmorphic gold rim */
+    .invitation-card {
+      position: relative;
+      z-index: 10;
+      max-width: 620px;
+      width: 100%;
+      background: rgba(22, 18, 16, 0.68);
+      backdrop-filter: blur(12px);
+      border-radius: 58px;
+      border: 1px solid rgba(217, 180, 139, 0.55);
+      box-shadow: 0 35px 65px -15px rgba(0,0,0,0.6), 0 0 0 1px rgba(217, 180, 139, 0.2) inset, 0 0 0 3px rgba(255,245,220,0.08);
+      padding: 2.2rem 2rem 2.8rem;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    /* orchid decoration : elegant vector-like pseudo elements */
+    .orchid-accent {
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+    .orchid-accent::before,
+    .orchid-accent::after {
+      content: "🌿";
+      font-size: 2.2rem;
+      opacity: 0.6;
+      position: absolute;
+      top: -10px;
+    }
+    .orchid-accent::before {
+      left: -15px;
+      transform: rotate(-25deg);
+    }
+    .orchid-accent::after {
+      right: -15px;
+      transform: rotate(25deg);
+    }
+
+    .orchid-icon {
+      font-size: 3rem;
+      letter-spacing: 12px;
+      filter: drop-shadow(0 2px 6px rgba(210, 150, 80, 0.4));
+      color: #ebc9a3;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 2.9rem;
+      background: linear-gradient(135deg, #F9E7C2, #E9C8A2, #D9AA70);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin: 0.75rem 0 0.5rem;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .name-glow {
+      font-size: 2rem;
+      font-weight: 500;
+      background: linear-gradient(120deg, #F5E1B0, #e7bc7e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      display: inline-block;
+      border-bottom: 1px dashed #e9bc84;
+      padding-bottom: 4px;
+    }
+
+    .message {
+      font-size: 1.23rem;
+      line-height: 1.5;
+      color: #F8EDE3;
+      font-weight: 400;
+      margin: 1.5rem 0 1rem;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      letter-spacing: 0.2px;
+    }
+
+    .orchid-quote {
+      font-style: italic;
+      color: #ddbc8c;
+      font-size: 1rem;
+      margin: 0.5rem 0 1.7rem;
+      border-left: 3px solid #ddb478;
+      padding-left: 1rem;
+      text-align: left;
+      max-width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(0,0,0,0.2);
+      border-radius: 45px;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 2rem 0 1rem;
+      position: relative;
+    }
+
+    .btn {
+      font-family: 'Inter', 'Segoe UI', system-ui;
+      font-weight: 600;
+      font-size: 1.4rem;
+      padding: 0.8rem 2.5rem;
+      border: none;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: #2c241e;
+      color: #ecd9bb;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+      backdrop-filter: blur(2px);
+      min-width: 150px;
+    }
+
+    .btn-yes {
+      background: linear-gradient(115deg, #c49a6c, #b57942);
+      color: #1e1612;
+      font-weight: bold;
+      border: 1px solid rgba(255,215,150,0.8);
+      text-shadow: 0 1px 0 rgba(255,255,200,0.5);
+      box-shadow: 0 12px 25px -8px rgba(0,0,0,0.5), 0 0 8px rgba(210,150,70,0.6);
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.04);
+      background: linear-gradient(115deg, #d9ac7a, #c2894e);
+      box-shadow: 0 18px 28px -8px black;
+    }
+
+    .btn-no {
+      background: #352c26;
+      border: 1px solid #7f6956;
+      color: #eddccb;
+      position: relative;
+      transition: all 0.08s linear;
+    }
+
+    /* The "run away" effect will be applied via JS, but we guarantee cursor avoidance */
+    .no-runaway {
+      cursor: pointer;
+    }
+
+    .response-message {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      padding: 1rem;
+      border-radius: 60px;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+      color: #f7e5cf;
+      font-weight: 500;
+      transition: all 0.25s;
+      font-style: normal;
+    }
+
+    .orchid-flower {
+      font-size: 2rem;
+      margin-top: 1rem;
+      opacity: 0.8;
+      letter-spacing: 6px;
+    }
+
+    footer {
+      font-size: 0.7rem;
+      margin-top: 2rem;
+      color: #aa8d6e;
+      font-family: monospace;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 520px) {
+      .invitation-card {
+        padding: 1.6rem 1.2rem 2rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .btn {
+        font-size: 1.1rem;
+        padding: 0.6rem 1.6rem;
+        min-width: 120px;
+      }
+      .buttons-container {
+        gap: 1.2rem;
+      }
+      .orchid-icon {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="invitation-card">
+  <div class="orchid-accent"></div>
+  <div class="orchid-icon">🌸 🦢 🌸</div>
+  <h1>a cup of coffee,<br>just you & me?</h1>
+  <div class="message">
+    <span class="name-glow">Radnyee</span> · let the orchids witness this moment
+  </div>
+  <div class="orchid-quote">
+    “Orchids speak of rare beauty & deep affection — let's create our own blooming memory.”
+  </div>
+
+  <div class="buttons-container">
+    <button class="btn btn-yes" id="yesBtn">✨ Yes ✨</button>
+    <button class="btn btn-no" id="noBtn">💔 No 💔</button>
+  </div>
+
+  <div id="responseArea" class="response-message">
+    <span>☕ the finest coffee, your favourite pastry, and a beautiful evening waiting...</span>
+  </div>
+  <div class="orchid-flower" id="orchidEmoji">🌺🌼🌺</div>
+  <footer>for Radnyee · with orchid whispers</footer>
+</div>
+
+<script>
+  (function() {
+    // -------- DOM elements ----------
+    const noButton = document.getElementById('noBtn');
+    const yesButton = document.getElementById('yesBtn');
+    const responseDiv = document.getElementById('responseArea');
+    const orchidFlowerSpan = document.getElementById('orchidEmoji');
+
+    // Ensure no button exists
+    if (!noButton) return;
+
+    // -------- State & constants ----------
+    let isConfirmed = false;          // once yes clicked, disable running away and show fixed romance
+    let runawayEnabled = true;
+
+    // Viewport boundaries with margin to keep button visible & fun
+    const boundaryPadding = 25;       // never disappear off-screen
+
+    // Helper: get parent container rect (buttons container)
+    function containerRect() {
+      const parent = noButton.parentElement;
+      if (!parent) return { width: window.innerWidth, height: window.innerHeight, left: 0, top: 0 };
+      const rect = parent.getBoundingClientRect();
+      return rect;
+    }
+
+    // Function to get safe random coordinates within parent container margins (so button never goes out of view)
+    function getRandomPositionNearby(btn) {
+      const parentRect = containerRect();
+      const btnRect = btn.getBoundingClientRect();
+      const btnWidth = btnRect.width;
+      const btnHeight = btnRect.height;
+
+      // container relative boundaries (the visible area inside parent, but we also consider parent boundaries)
+      let maxX = parentRect.width - btnWidth - boundaryPadding;
+      let maxY = parentRect.height - btnHeight - boundaryPadding;
+      let minX = boundaryPadding;
+      let minY = boundaryPadding;
+
+      if (maxX < minX) maxX = minX + 10;
+      if (maxY < minY) maxY = minY + 10;
+      
+      const randomX = Math.floor(Math.random() * (maxX - minX + 1) + minX);
+      const randomY = Math.floor(Math.random() * (maxY - minY + 1) + minY);
+      return { x: randomX, y: randomY };
+    }
+
+    // Initially set no button to relative, no transform
+    noButton.style.position = 'relative';
+    noButton.style.transition = 'transform 0.2s cubic-bezier(0.2, 1.2, 0.4, 1)';
+    noButton.style.willChange = 'transform';
+    
+    // Function to move no button randomly, but only if not confirmed
+    function moveNoButtonRandomly() {
+      if (!runawayEnabled || isConfirmed) return;
+      const parentRect = containerRect();
+      if (parentRect.width === 0) return;
+      const btnRect = noButton.getBoundingClientRect();
+      if (btnRect.width === 0) return;
+      const { x, y } = getRandomPositionNearby(noButton);
+      const currentLeft = btnRect.left - parentRect.left;
+      const currentTop = btnRect.top - parentRect.top;
+      const deltaX = x - currentLeft;
+      const deltaY = y - currentTop;
+      noButton.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    }
+
+    // check distance from cursor and run away if too close
+    function handleCursorProximity(e) {
+      if (isConfirmed || !runawayEnabled) return;
+      const noRect = noButton.getBoundingClientRect();
+      const cursorX = e.clientX;
+      const cursorY = e.clientY;
+      
+      // Calculate center of button
+      const btnCenterX = noRect.left + noRect.width / 2;
+      const btnCenterY = noRect.top + noRect.height / 2;
+      const distance = Math.hypot(cursorX - btnCenterX, cursorY - btnCenterY);
+      const threshold = 85; // pixels before running away
+      
+      if (distance < threshold) {
+        // Make it dash to new random position instantly
+        const parentRect = containerRect();
+        if (parentRect.width > 0) {
+          const { x, y } = getRandomPositionNearby(noButton);
+          const currentLeft = noRect.left - parentRect.left;
+          const currentTop = noRect.top - parentRect.top;
+          const deltaX = x - currentLeft;
+          const deltaY = y - currentTop;
+          noButton.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+          // add little flutter effect on orchid
+          orchidFlowerSpan.style.transform = 'scale(1.1)';
+          setTimeout(() => { if(orchidFlowerSpan) orchidFlowerSpan.style.transform = ''; }, 200);
+        }
+      }
+    }
+    
+    // When window resizes, ensure no button stays inside boundaries
+    function repositionNoButtonAfterResize() {
+      if (isConfirmed) return;
+      // reset transform to identity temporarily to compute new coordinates
+      noButton.style.transform = 'none';
+      const parentRect = containerRect();
+      if (parentRect.width === 0) return;
+      const btnRect = noButton.getBoundingClientRect();
+      // check if partially out of parent
+      const relativeLeft = btnRect.left - parentRect.left;
+      const relativeTop = btnRect.top - parentRect.top;
+      const btnWidth = btnRect.width;
+      const btnHeight = btnRect.height;
+      let newLeft = relativeLeft;
+      let newTop = relativeTop;
+      let needsMove = false;
+      if (relativeLeft + btnWidth > parentRect.width - boundaryPadding) {
+        newLeft = parentRect.width - btnWidth - boundaryPadding;
+        needsMove = true;
+      }
+      if (relativeLeft < boundaryPadding) {
+        newLeft = boundaryPadding;
+        needsMove = true;
+      }
+      if (relativeTop + btnHeight > parentRect.height - boundaryPadding) {
+        newTop = parentRect.height - btnHeight - boundaryPadding;
+        needsMove = true;
+      }
+      if (relativeTop < boundaryPadding) {
+        newTop = boundaryPadding;
+        needsMove = true;
+      }
+      if (needsMove) {
+        const deltaX = newLeft - relativeLeft;
+        const deltaY = newTop - relativeTop;
+        noButton.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+      } else {
+        // make sure it stays within sane limits by slight random reposition
+        const { x, y } = getRandomPositionNearby(noButton);
+        const currentLeft = btnRect.left - parentRect.left;
+        const currentTop = btnRect.top - parentRect.top;
+        const dx = x - currentLeft;
+        const dy = y - currentTop;
+        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+          noButton.style.transform = `translate(${dx}px, ${dy}px)`;
+        }
+      }
+    }
+    
+    // YES button event: romantic confirmation, asks to meet tomorrow
+    function onYesClick() {
+      if (isConfirmed) return;
+      isConfirmed = true;
+      runawayEnabled = false;
+      // remove any transform from no button and disable it
+      noButton.style.transition = 'opacity 0.4s, transform 0.2s';
+      noButton.style.transform = 'translate(0px, 0px)';
+      noButton.style.opacity = '0.5';
+      noButton.style.cursor = 'default';
+      noButton.disabled = true;
+      noButton.style.pointerEvents = 'none';
+      // Updated romantic response: ask to meet tomorrow, no flowers to bring, just warmth.
+      responseDiv.innerHTML = `✨ Radnyee, your “Yes” makes my heart bloom like a thousand orchids. ✨<br> 🍂 Let’s meet <strong>tomorrow</strong> at your favourite café — just you, me, and the perfect cup of coffee. How does 4 PM sound? I'll be counting every minute until then. ☕💛`;
+      orchidFlowerSpan.innerHTML = '🌷✨ TOMORROW · COFFEE & YOU ✨🌷';
+      // create premium confetti celebration
+      createConfettiRomance();
+      // pulse effect on yes button
+      yesButton.style.transform = 'scale(1.02)';
+      setTimeout(() => { if(yesButton) yesButton.style.transform = ''; }, 300);
+    }
+
+    function createConfettiRomance() {
+      const colors = ['#E9C8A2', '#D9AA70', '#F7E2C0', '#C49A6C', '#E0B386'];
+      for (let i = 0; i < 65; i++) {
+        const conf = document.createElement('div');
+        conf.innerHTML = '🌸';
+        conf.style.position = 'fixed';
+        conf.style.left = Math.random() * window.innerWidth + 'px';
+        conf.style.top = '-30px';
+        conf.style.fontSize = (16 + Math.random() * 20) + 'px';
+        conf.style.pointerEvents = 'none';
+        conf.style.zIndex = '9999';
+        conf.style.opacity = '0.9';
+        conf.style.transition = 'transform 1.2s linear, opacity 1.5s';
+        document.body.appendChild(conf);
+        const fall = () => {
+          conf.style.transform = `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 360}deg)`;
+          conf.style.opacity = '0';
+          setTimeout(() => conf.remove(), 1600);
+        };
+        setTimeout(fall, i * 30);
+      }
+      // add orchid petals effect
+      for (let i=0;i<35;i++) {
+        const petal = document.createElement('div');
+        petal.innerHTML = '🌺';
+        petal.style.cssText = 'position:fixed; left:'+Math.random()*window.innerWidth+'px; top:-20px; font-size:1.5rem; z-index:9998; pointer-events:none; transition: all 1.2s ease-out; opacity:0.8';
+        document.body.appendChild(petal);
+        setTimeout(()=> {
+          petal.style.transform = `translateY(${window.innerHeight+80}px) rotate(${Math.random()*200}deg)`;
+          petal.style.opacity = '0';
+          setTimeout(()=>petal.remove(),1500);
+        }, 40*i);
+      }
+    }
+    
+    // mousemove: only if no button active
+    document.addEventListener('mousemove', (e) => {
+      if (!runawayEnabled || isConfirmed) return;
+      handleCursorProximity(e);
+    });
+    
+    // Touch devices: on touchmove, button should avoid finger.
+    document.addEventListener('touchmove', (e) => {
+      if (!runawayEnabled || isConfirmed) return;
+      const touch = e.touches[0];
+      if (touch) {
+        const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY };
+        handleCursorProximity(fakeEvent);
+      }
+    });
+    
+    // On window load, set initial random position for no button (to make it elusive from start)
+    window.addEventListener('load', () => {
+      repositionNoButtonAfterResize();
+      setTimeout(() => {
+        if (!isConfirmed) {
+          const parentRect = containerRect();
+          if (parentRect.width > 0) {
+            const { x, y } = getRandomPositionNearby(noButton);
+            const btnRect = noButton.getBoundingClientRect();
+            const currentLeft = btnRect.left - parentRect.left;
+            const currentTop = btnRect.top - parentRect.top;
+            const deltaX = x - currentLeft;
+            const deltaY = y - currentTop;
+            if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3)
+              noButton.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+          }
+        }
+      }, 100);
+    });
+    
+    window.addEventListener('resize', () => {
+      repositionNoButtonAfterResize();
+    });
+    
+    yesButton.addEventListener('click', onYesClick);
+    
+    // If someone clicks no while it runs (extremely unlikely but if clicked via accessibility) we convert to yes gracefully
+    noButton.addEventListener('click', (e) => {
+      if (isConfirmed) return;
+      e.preventDefault();
+      if (!isConfirmed) {
+        onYesClick(); // romantic conversion: even "no" becomes yes because it's meant to be
+        responseDiv.innerHTML = "💖 Even your 'No' turned into a 'Yes' — because some connections are inevitable. Tomorrow. Coffee. Just us. 💖";
+      }
+    });
+  })();
+</script>
+</body>
+</html>
